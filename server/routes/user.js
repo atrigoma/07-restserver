@@ -3,13 +3,15 @@ const app = express()
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const _ = require('underscore');
+const { verifyToken, verifyAdminRole } = require('../middlewares/authentication');
+
 
 
 app.get('/', function (req, res) {
     res.json('Hello World')
   })
   
-  app.get('/user', function (req, res) {
+  app.get('/user', verifyToken , (req, res) => {
     let from = req.query.from || 0;
     from = Number(from);
     
@@ -39,7 +41,7 @@ app.get('/', function (req, res) {
       });
     });
     
-  app.post('/user', function (req, res) {
+  app.post('/user', [verifyToken, verifyAdminRole] ,  function (req, res) {
       let body = req.body;
 
       let user = new User({
@@ -66,13 +68,13 @@ app.get('/', function (req, res) {
   
   })
     
-  app.put('/user/:id', function (req, res) {
+  app.put('/user/:id',[verifyToken, verifyAdminRole] ,  function (req, res) {
       let id= req.params.id;
 
       // Con la funcion pick de underscore, se selecciona los campos que se quieren utilizar.
       let body= _.pick(req.body, ['name', 'email', 'img', 'role', 'status']) ;
   
-      User.findByIdAndUpdate( id, body, {new: true, runValidators: true} , (err, userDB) =>{
+      User.findByIdAndUpdate( id, body, {new: true, runValidators: false} , (err, userDB) =>{
 
         if (err){
             return res.status(400).json({
@@ -89,7 +91,7 @@ app.get('/', function (req, res) {
     })
       
   
-  app.delete('/user/bbdd/:id', function (req, res) {
+  app.delete('/user/bbdd/:id', [verifyToken, verifyAdminRole] , function (req, res) {
 
     let paramid= req.params.id;
     let user = User.findByIdAndRemove ( paramid,  (err, userDB) =>{
