@@ -7,10 +7,6 @@ const { verifyToken, verifyAdminRole } = require('../middlewares/authentication'
 
 
 
-app.get('/', function (req, res) {
-    res.json('Hello World')
-  })
-  
   app.get('/user', verifyToken , (req, res) => {
     let from = req.query.from || 0;
     from = Number(from);

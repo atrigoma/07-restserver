@@ -31,3 +31,11 @@ else{
 }
 
 process.env.urlDB= urlDB;
+
+
+// ========================================
+// Config google
+// ========================================
+// Client ID:
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '628180348697-gch8c99h98ndb6p3q0jnramg8lgoq5pp.apps.googleusercontent.com';
