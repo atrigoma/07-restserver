@@ -10,7 +10,7 @@ process.env.PORT = process.env.PORT || 3000;
 // ========================================
 
 // Expire: 60 seconds * 60 minutes * 24 hours * 30 days
-process.env.EXPIRE_TOKEN = 60*60*24*30;
+process.env.EXPIRE_TOKEN = 60*60*60*24*30;
 
 
 // Seed authentication

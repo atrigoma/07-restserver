@@ -14,7 +14,7 @@ const { verifyToken, verifyAdminRole } = require('../middlewares/authentication'
     let limit = req.query.limit || 5;
     limit = Number(limit);
 
-    User.find({status:true}, 'name email role status google')
+    User.find({status:true})
         .limit(limit)
         .skip(from)
         .exec((err, usuarios) => {
