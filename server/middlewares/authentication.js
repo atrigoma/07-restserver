@@ -39,7 +39,27 @@ let verifyAdminRole = (req, res, next) =>{
     next();
 };
 
+let verifyTokenURL = (req, res, next) =>{
+    let token = req.query.Authorization;
+
+    let SEED = process.env.SEED_TOKEN;
+
+    jwt.verify(token, SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err
+            })
+        }
+        // el dato que tenemos en el payload (que viene dentro del decoded) es "user"
+        req.user = decoded.user;
+        next();
+    })  
+
+}
+
 module.exports = {
     verifyToken,
-    verifyAdminRole
+    verifyAdminRole,
+    verifyTokenURL
 }
